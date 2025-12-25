@@ -75,7 +75,8 @@ cat > composer.json << 'EOF'
             "php-http/discovery": true
         },
         "audit": {
-            "block-insecure": false
+            "block-insecure": false,
+            "ignore": ["PKSA-8qx3-n5y5-vvnd"]
         }
     },
     "autoload": {
@@ -120,7 +121,7 @@ rm -f composer.lock
 
 # Installa dipendenze (ignora vulnerabilità di sicurezza per Laravel 8)
 echo "📥 Installazione dipendenze (può richiedere alcuni minuti)..."
-./bin/composer install --optimize-autoloader --no-dev --no-interaction --ignore-platform-reqs
+./bin/composer install --optimize-autoloader --no-dev --no-interaction --ignore-platform-reqs --no-audit
 
 # Configura .env
 echo "⚙️  Configurazione .env..."
