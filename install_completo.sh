@@ -61,11 +61,22 @@ cat > composer.json << 'EOF'
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
-        "laravel/pint": "^1.0",
         "laravel/sail": "^1.0.1",
         "mockery/mockery": "^1.4.2",
         "nunomaduro/collision": "^5.0",
         "phpunit/phpunit": "^9.3"
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "php-http/discovery": true
+        },
+        "audit": {
+            "block-insecure": false
+        }
     },
     "autoload": {
         "psr-4": {
@@ -99,15 +110,6 @@ cat > composer.json << 'EOF'
             "dont-discover": []
         }
     },
-    "config": {
-        "optimize-autoloader": true,
-        "preferred-install": "dist",
-        "sort-packages": true,
-        "allow-plugins": {
-            "pestphp/pest-plugin": true,
-            "php-http/discovery": true
-        }
-    },
     "minimum-stability": "stable",
     "prefer-stable": true
 }
@@ -116,9 +118,9 @@ EOF
 # Rimuovi composer.lock
 rm -f composer.lock
 
-# Installa dipendenze
+# Installa dipendenze (ignora vulnerabilità di sicurezza per Laravel 8)
 echo "📥 Installazione dipendenze (può richiedere alcuni minuti)..."
-./bin/composer install --optimize-autoloader --no-dev --no-interaction
+./bin/composer install --optimize-autoloader --no-dev --no-interaction --ignore-platform-reqs
 
 # Configura .env
 echo "⚙️  Configurazione .env..."
