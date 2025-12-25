@@ -70,20 +70,21 @@ cd funtasting
 ### 4. Installa Composer
 
 ```bash
-cd /tmp
+# Vai nella directory del progetto
+cd /www/funtasting  # oppure /var/www/funtasting
+
+# Installa Composer nella directory del progetto
 curl -sS https://getcomposer.org/installer | php
-mkdir -p /tmp/composer
-mv composer.phar /tmp/composer/composer
-chmod +x /tmp/composer/composer
-export PATH="/tmp/composer:$PATH"
+mkdir -p bin
+mv composer.phar bin/composer
+chmod +x bin/composer
 ```
 
 ### 5. Installa Dipendenze PHP
 
 ```bash
-# Torna nella directory del progetto
-cd /www/funtasting  # oppure /var/www/funtasting
-/tmp/composer/composer install --optimize-autoloader --no-dev
+# Sei già nella directory del progetto
+./bin/composer install --optimize-autoloader --no-dev
 ```
 
 ### 6. Configura .env
