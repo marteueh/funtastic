@@ -1,0 +1,86 @@
+# ============================================
+# COMANDI PER DEPLOY SUL SERVER
+# Copia e incolla questi comandi sul server
+# ============================================
+
+# 1. Vai nella directory www
+cd /home/users/fantasting/www
+
+# 2. Rimuovi vecchia installazione (se esiste)
+rm -rf funtasting
+
+# 3. Clona il branch PHP 7.4
+# Se Git è disponibile:
+git clone -b php7.4-compatible https://github.com/marteueh/funtastic.git funtasting
+
+# ALTERNATIVA: Se Git non funziona, usa wget:
+# wget https://github.com/marteueh/funtastic/archive/refs/heads/php7.4-compatible.zip -O funtasting.zip
+# unzip funtasting.zip
+# mv funtastic-php7.4-compatible funtasting
+# rm funtasting.zip
+
+# 4. Entra nella directory
+cd funtasting
+
+# 5. Installa Composer
+curl -sS https://getcomposer.org/installer | php
+mkdir -p bin
+mv composer.phar bin/composer
+chmod +x bin/composer
+
+# ALTERNATIVA se curl non funziona:
+# php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+# php composer-setup.php
+# php -r "unlink('composer-setup.php');"
+# mkdir -p bin
+# mv composer.phar bin/composer
+# chmod +x bin/composer
+
+# 6. Installa dipendenze
+./bin/composer install --optimize-autoloader --no-dev --no-interaction
+
+# 7. Configura .env
+cp .env.example .env
+
+# 8. Genera APP_KEY
+php artisan key:generate
+
+# 9. Crea database SQLite
+touch database/database.sqlite
+chmod 664 database/database.sqlite
+chmod 775 database
+
+# 10. Esegui migrazioni
+php artisan migrate --force
+
+# 11. Crea link storage
+php artisan storage:link
+
+# 12. Ottimizza cache
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+
+# 13. Imposta permessi
+chmod -R 775 storage bootstrap/cache
+chmod 664 database/database.sqlite
+
+# 14. Modifica .env (IMPORTANTE!)
+nano .env
+
+# In .env, modifica queste righe:
+# APP_URL=http://217.114.212.10:8000
+# DB_DATABASE=/home/users/fantasting/www/funtasting/database/database.sqlite
+# APP_DEBUG=false
+# APP_ENV=production
+
+# 15. Avvia il server
+php artisan serve --host=0.0.0.0 --port=8000
+
+# Per eseguire in background:
+# nohup php artisan serve --host=0.0.0.0 --port=8000 > /dev/null 2>&1 &
+
+# ============================================
+# FINE
+# ============================================
+
