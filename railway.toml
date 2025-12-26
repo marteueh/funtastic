@@ -2,7 +2,7 @@
 builder = "nixpacks"
 
 [deploy]
-startCommand = "php -r \"chdir(__DIR__); \\\$port = (int)getenv('PORT') ?: 8000; passthru('php artisan serve --host=0.0.0.0 --port='.\\\$port);\""
+startCommand = "php artisan serve --host=0.0.0.0 --port=${{PORT}}"
 healthcheckPath = "/"
 healthcheckTimeout = 300
 restartPolicyType = "ON_FAILURE"
