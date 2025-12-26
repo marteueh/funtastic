@@ -2,7 +2,7 @@
 builder = "nixpacks"
 
 [deploy]
-startCommand = "chmod +x start.sh && ./start.sh"
+startCommand = "bash -c 'php artisan serve --host=0.0.0.0 --port=${PORT:-8000}'"
 healthcheckPath = "/"
 healthcheckTimeout = 300
 restartPolicyType = "ON_FAILURE"
